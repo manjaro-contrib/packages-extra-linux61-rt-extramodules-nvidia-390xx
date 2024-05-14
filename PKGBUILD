@@ -1,9 +1,7 @@
 # Maintainer: Bernhard Landauer <bernhard[at]manjaro[dot]org>
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 # Contributor: Gerd Röthig (DAC24)
-
-# Archlinux credits:
-# Maintainer : Thomas Baechler <thomas@archlinux.org>
+# Contributor: Thomas Baechler <thomas@archlinux.org>
 # Contributor: Alonso Rodriguez <alonsorodi20 (at) gmail (dot) com>
 # Contributor: Sven-Hendrik Haase <sh@lutzhaase.com>
 # Contributor: Felix Yan <felixonmars@archlinux.org>
@@ -29,13 +27,18 @@ replaces=('linux515-rt-nvidia-390xx' 'linux60-rt-nvidia-390xx')
 options=(!strip)
 install=nvidia.install
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
-source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
-sha256sums=('162317a49aa5a521eb888ec12119bfe5a45cec4e8653efc575a2d04fb05bf581')
+source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
+        'gcc14.patch')
+sha256sums=('162317a49aa5a521eb888ec12119bfe5a45cec4e8653efc575a2d04fb05bf581'
+            'af840e7e03aa9cf311c0d1e32469596e5e728a0206cbe06f99bbc22e3de25a12')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 prepare() {
     sh "${_pkg}.run" --extract-only
+
+    cd "${_pkg}"
+    patch -Np1 -i ${srcdir}/gcc14.patch
 }
 
 build() {
